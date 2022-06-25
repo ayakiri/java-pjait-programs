@@ -1,0 +1,55 @@
+@startuml test
+
+
+class BankAccount {
+    - accountNumber : String
+    - currentMoney : double
+    ----
+    + getAccountNumber():String
+    + getCurrentMoney():double
+    + addMoney(value: double) : void
+    + subtractMoney(value: double) : void
+}
+
+class BankAccountManager {
+    - accounts : HashMap<String, BankAccount>
+    - operations : HashMap<BankOperationType, ArrayList<BankAccountOperation>>
+    ----
+    + addAccount(account: BankAccount) : void
+    + registerOperation(operation :BankAccountOperation):void
+    + performDeposits() : void
+    + performWithdrawals() : void
+    + performTransfers() : void
+}
+
+
+class BankAccountOperation{
+    - sourceBankAccount : BankAccount
+    - tagetBankAccount : BankAccount
+    - money : double
+    - type : BankOperationType
+    - date : LocalDateTime
+    ----
+    + BankAccountOperation(type: BankOperationType)
+    + getSourceBankAccount() : BankAccount
+    + setSourceBankAccount(account : BankAccount):void
+    + getTargetBankAccount() : BankAccount
+    + setTargetBankAccount(account: BankAccount) : BankAccount
+    + setMoney(value: double) : void
+    + getMoney(): double
+    + getDate(): LocalDateTime
+    + setDate(date: LocalDateTime):void
+    + getType() : BankOperationType
+}
+
+enum BankOperationType{
+    DEPOSIT, TRANSFER, WITHDRAWAL
+}
+
+
+BankAccount --> "source" BankAccountOperation
+BankAccount --> "target" BankAccountOperation
+BankAccountManager -o BankAccount
+BankAccountManager -o BankAccountOperation
+
+@enduml
